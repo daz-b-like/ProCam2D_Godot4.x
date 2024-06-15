@@ -1,11 +1,11 @@
 ![procam wallpaper.png](https://i.ibb.co/FnsPZxb/procam-wallpaper.png)
 
 
-# ProCam2D Plugin Documentation
+# ProCam2D Plugin
 
 ## Overview
 
-Introducing the ProCam2D plugin documentation! ProCam2D is the ultimate camera for all your 2D needs. Its designed to give you precise control over 2D camera behavior, whether you want to add smooth camera movement, dynamic zoom, or exciting screen shake effects. Our ProCam2D plugin, coupled with the TrackPoint node and a convenient Autoload script, can follow the action in your game with style and precision.
+Introducing the ProCam2D plugin! ProCam2D is the ultimate camera for all your 2D needs. Its designed to give you precise control over 2D camera behavior, whether you want to add smooth camera movement, dynamic zoom, or exciting screen shake effects. Our ProCam2D plugin, coupled with the TrackPoint node and a convenient Autoload script, can follow the action in your game with style and precision.
 
 ## Features
 
@@ -15,6 +15,7 @@ Introducing the ProCam2D plugin documentation! ProCam2D is the ultimate camera f
 - Flexible drag and rotation controls
 - Zoom and boundary limits
 - Multi-object tracking with target radius adjustment
+- Controlled by a singleton named `ProCam` for efficiency. 
 
 ## Enums
 
@@ -118,7 +119,7 @@ ProCam.start_shake(types, duration, magnitude, speed)
 
 ## PCTrackPoint Node
 
-The PCTrackPoint node is used for defining specific points in the scene that the camera can track. The camera will always keep these points and the target on the screen, automatically adjusting the zoom level if needed.
+The PCTrackPoint node is used for defining specific points in the scene that the camera can track. This node needs to be added to the scene and `enabled` & `ProCam.track_multiple_objects` set to `true` in order for multi-object tracking to work. The camera will always keep these points and the target on the screen, automatically adjusting the zoom level if needed.
 
 ### Properties
 
@@ -214,14 +215,12 @@ func on_treasure_found():
 ## Installation
 
 1. Download or clone this repository into your Godot project.
-2. Move the `addons/ProCam2D`
-
- directory into the `addons` directory of your Godot project.
+2. Move the `addons/ProCam2D` directory into the `addons` directory of your Godot project.
 3. Enable the plugin in Godot: Go to `Project` -> `Project Settings` -> `Plugins` and enable `ProCam2D`.
 
 ## Contributing
 
-Contributions are welcome! Please open an issue to discuss what you would like to change. Or make a pull request.
+Contributions are welcome! For detailed instructions on how to contribute, please see our [Contributing Guide](CONTRIBUTING.md).
 
 ## Reporting Bugs or Requesting Features
 
