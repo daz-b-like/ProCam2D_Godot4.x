@@ -29,12 +29,10 @@ const PROCAMTRACKPOINT: String = "PCTrackPoint"
 func _enter_tree() -> void:
 	#ProCam Nodes
 	add_custom_type(PROCAM2D, "Node2D", preload("res://addons/ProCam2D_0.1/scripts/ProCam2D.gd"), preload("res://addons/ProCam2D_0.1/icons/ProCam2D_icon.png"))
-#	add_custom_type(PROCAMPARALLAX, "Node2D", preload("res://addons/ProCam2D_0.1/scripts/PCParallaxLayer.gd"), preload("res://addons/ProCam2D_0.1/icons/ParallaxLayer_icon.png"))
 	add_custom_type(PROCAMTRACKPOINT, "Node2D", preload("res://addons/ProCam2D_0.1/scripts/PCTrackPoint.gd"), preload("res://addons/ProCam2D_0.1/icons/TrackPoint_icon.png"))
 	add_autoload_singleton("ProCam","res://addons/ProCam2D_0.1/scripts/ProCam.gd")
 func _exit_tree() -> void:
 	remove_custom_type(PROCAM2D)
-#	remove_custom_type(PROCAMPARALLAX)
 	remove_custom_type(PROCAMTRACKPOINT)
 	remove_autoload_singleton("ProCam")
 

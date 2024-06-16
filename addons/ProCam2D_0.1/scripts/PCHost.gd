@@ -1,4 +1,3 @@
-@tool
 #MIT License
 
 #Copyright (c) 2024 dazlike
@@ -20,6 +19,7 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
+@tool
 
 extends Node2D
 
@@ -35,8 +35,8 @@ enum SmoothType {
 	SMOOTH_DAMP
 }
 
-const MIN_VELOCITY_THRESHOLD: float = 0.1001
-const MIN_DELTA_THRESHOLD: float = 0.001
+const MIN_VELOCITY_THRESHOLD: float = 0.0001
+const MIN_DELTA_THRESHOLD: float = 0.0001
 
 # Properties
 # TODO: implement more signals
@@ -44,7 +44,7 @@ signal target_changed(new_target, old_target)
 signal zoom_level_changed(new_level, old_level)
 signal rotation_enabled()
 signal rotation_disabled()
-signal position_offset_changed(new_offset, old_offset)
+signal offset_changed(new_offset, old_offset)
 signal screen_shake_started(type)
 signal screen_shake_finished(type)
 signal process_mode_changed(new_mode)
@@ -133,11 +133,11 @@ func _ready() -> void:
 func _setup_camera() -> void:
 	z_index = 2000
 	_camera = Camera2D.new()
-	_camera.ignore_rotation = false # reversed "rotating" for Camera2D
+	_camera.ignore_rotation = false
 	var grandpa = get_parent().get_parent()
-	await grandpa.ready
+	yield(grandpa,"ready")
 	grandpa.add_child(_camera)
-	_camera.make_current()
+    _camera.make_current()
 
 func _setup_target_properties():
 	if not _target_node:
@@ -149,7 +149,7 @@ func _setup_target_properties():
 		_last_cur_pos = _target.global_position
 		_cur_pos = _target.global_position
 		_cur_zoom = Vector2(_zoom_level, _zoom_level)
-		_cur_rot = _target.rotation if _rotate else 0
+		_cur_rot = _target.rotation if _rotate else 0.0
 		_cur_offset = _offset
 		_cur_pos.x = clamp(_cur_pos.x, _left_limit + _vp_size.x / 2, _right_limit - _vp_size.x / 2)
 		_cur_pos.y = clamp(_cur_pos.y, _top_limit + _vp_size.y / 2, _bottom_limit - _vp_size.y / 2)
@@ -187,7 +187,7 @@ func _main_loop(delta: float) -> void:
 	# Smooth offset
 	var offset_duration: float = (1.0 / _offset_speed if _offset_speed != 0 else 1 / 0.1)
 	if _offset_smoothly:
-		_cur_offset = _cur_offset.lerp(_target_offset, _exp_smoothing(offset_duration, delta))
+		_cur_offset = _cur_offset.linear_interpolate(_target_offset, _exp_smoothing(offset_duration, delta))
 	else:
 		_cur_offset = _target_offset
 		
@@ -250,7 +250,7 @@ func _main_loop(delta: float) -> void:
 	# Smooth zoom
 	var zoom_easing_duration = 1.0 / _zoom_speed if _zoom_speed != 0 else 1 / 0.1
 	if _zoom_smoothly:
-		_cur_zoom = _cur_zoom.lerp(_tgt_zoom, _exp_smoothing(zoom_easing_duration, delta))
+		_cur_zoom = _cur_zoom.linear_interpolate(_tgt_zoom, _exp_smoothing(zoom_easing_duration, delta))
 	else:
 		_cur_zoom = _tgt_zoom
 
@@ -292,14 +292,14 @@ func _update_screen_and_margin_rects():
 	var window_height:float = ProjectSettings.get_setting("display/window/size/viewport_height")
 	var window_size = Vector2(window_width, window_height)
 	_vp_size = window_size * _cur_zoom
-	
-	var offset_left = position.x - _vp_size.x / 2 * _drag_margin_left
-	var offset_top = position.y - _vp_size.y / 2 * _drag_margin_top
-	var offset_right = position.x + _vp_size.x / 2 * _drag_margin_right
-	var offset_bottom = position.y + _vp_size.y / 2 * _drag_margin_bottom
+
+	var margin_left = position.x - _vp_size.x / 2 * _drag_margin_left
+	var margin_top = position.y - _vp_size.y / 2 * _drag_margin_top
+	var margin_right = position.x + _vp_size.x / 2 * _drag_margin_right
+	var margin_bottom = position.y + _vp_size.y / 2 * _drag_margin_bottom
 	_screen_rect = Rect2(-_vp_size / 2, _vp_size)
 	_limit_rect = Rect2(_left_limit - global_position.x, _top_limit - global_position.y, _right_limit - _left_limit,_bottom_limit - _top_limit)
-	_margin_rect = Rect2(offset_left - position.x - _cur_offset.x, offset_top - position.y - _cur_offset.y, offset_right - offset_left, offset_bottom - offset_top)
+	_margin_rect = Rect2(margin_left - position.x - _cur_offset.x, margin_top - position.y - _cur_offset.y, margin_right - margin_left, margin_bottom - margin_top)
 
 func _drag_margins_refactoring() -> Vector2:
 	var window_width:float = ProjectSettings.get_setting("display/window/size/viewport_width")
@@ -307,13 +307,13 @@ func _drag_margins_refactoring() -> Vector2:
 	var window_size = Vector2(window_width, window_height)
 	_vp_size = window_size * _cur_zoom
 
-	var offset_left: float = _cur_pos.x - _vp_size.x / 2 * _drag_margin_right
-	var offset_top: float = _cur_pos.y - _vp_size.y / 2 * _drag_margin_bottom
-	var offset_right: float = _cur_pos.x + _vp_size.x / 2 * _drag_margin_left
-	var offset_bottom: float = _cur_pos.y + _vp_size.y / 2 * _drag_margin_top
+	var margin_left: float = _cur_pos.x - _vp_size.x / 2 * _drag_margin_right
+	var margin_top: float = _cur_pos.y - _vp_size.y / 2 * _drag_margin_bottom
+	var margin_right: float = _cur_pos.x + _vp_size.x / 2 * _drag_margin_left
+	var margin_bottom: float = _cur_pos.y + _vp_size.y / 2 * _drag_margin_top
 
-	_margin_offset_points.point1 = Vector2(offset_right - _cur_pos.x, offset_bottom - _cur_pos.y)
-	_margin_offset_points.point2 = Vector2(offset_left - _cur_pos.x, offset_top - _cur_pos.y)
+	_margin_offset_points.point1 = Vector2(margin_right - _cur_pos.x, margin_bottom - _cur_pos.y)
+	_margin_offset_points.point2 = Vector2(margin_left - _cur_pos.x, margin_top - _cur_pos.y)
 	
 	var margin_offset_calculation = -(_cur_pos - _last_cur_pos).rotated(-_cur_rot)
 
@@ -324,7 +324,7 @@ func _drag_margins_refactoring() -> Vector2:
 		if _margin_offset_points.point2.x - 5 > _margin_offset_points.offset.x + margin_offset_calculation.x:
 			_margin_offset_points.offset.x -= margin_offset_calculation.x
 	else:
-		_margin_offset_points.offset.x = lerp(_margin_offset_points.offset.x, 0.0, 0.1)
+		_margin_offset_points.offset.x = lerp(_margin_offset_points.offset.x, 0, 0.1)
 	
 	# Vertical margin
 	if _enable_v_margins:
@@ -333,7 +333,7 @@ func _drag_margins_refactoring() -> Vector2:
 		if _margin_offset_points.point2.y - 5 > _margin_offset_points.offset.y + margin_offset_calculation.y:
 			_margin_offset_points.offset.y -= margin_offset_calculation.y
 	else:
-		_margin_offset_points.offset.y = lerp(_margin_offset_points.offset.y, 0.0, 0.1)
+		_margin_offset_points.offset.y = lerp(_margin_offset_points.offset.y, 0, 0.1)
 
 	_margin_offset_points.offset.x = clamp(_margin_offset_points.offset.x, _margin_offset_points.point2.x, _margin_offset_points.point1.x)
 	_margin_offset_points.offset.y = clamp(_margin_offset_points.offset.y, _margin_offset_points.point2.y, _margin_offset_points.point1.y)
@@ -546,7 +546,7 @@ func _start_shake(types: Array, duration: float, magnitude: float, speed: float)
 
 func _update_shakes():
 	if _screen_shake_data["is_shaking"]:
-		if not _screen_shake_data["active_shakes"].is_empty():
+		if not _screen_shake_data["active_shakes"].empty():
 			var total_offset: Vector2
 			var total_zoom: Vector2
 			var total_rotation: float
@@ -565,7 +565,7 @@ func _update_shakes():
 
 func _set_target_node(value):
 	_target_node = value
-	update_configuration_warnings()
+	update_configuration_warning()
 	
 func _set_zoom_level(value):
 	emit_signal("zoom_level_changed", _zoom_level, value)
@@ -574,7 +574,7 @@ func _set_zoom_level(value):
 func _set_offset(value):
 	_offset = value
 	_target_offset = _offset
-	emit_signal("position_offset_changed",value,_offset)
+	emit_signal("offset_changed",value,_offset)
 	
 func _set_process_mode(value):
 	_process_mode = value
@@ -603,13 +603,13 @@ func _set_screen_center(_value):
 
 func _draw():
 	if Engine.is_editor_hint() and _draw_bounds or not Engine.is_editor_hint() and _show_bounds and _target:
-		draw_rect(_screen_rect, Color.WHITE, false, 1.5)# true) TODOConverter3To4 Antialiasing argument is missing
-		draw_rect(_limit_rect, Color.RED, false, 1.5)# true) TODOConverter3To4 Antialiasing argument is missing
+		draw_rect(_screen_rect, Color.white, false, 1.5,true)
+		draw_rect(_limit_rect,Color.red, false,1.5,true)
 		# Draw margin bounds
 		if _enable_h_margins or _enable_v_margins:
-			draw_rect(_margin_rect, Color.YELLOW, false, 1.5)# true) TODOConverter3To4 Antialiasing argument is missing
+			draw_rect(_margin_rect, Color.yellow, false, 1.5,true)
 
-func _get_configuration_warnings():
+func _get_configuration_warning():
 	if _target_node:
 		return ""
 	else:

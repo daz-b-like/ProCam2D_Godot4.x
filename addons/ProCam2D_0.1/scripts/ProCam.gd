@@ -279,4 +279,4 @@ func set_sc(_value):
 		printerr("You can't directly change the screen center. Use current_position")
 
 func get_sc() -> Vector2:
-	return _get_active_procam_value("_get_screen_center")
+	return _get_active_procam_value("_screen_center")

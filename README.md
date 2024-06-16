@@ -19,7 +19,7 @@ Introducing the ProCam2D plugin! ProCam2D is the ultimate camera for all your 2D
 
 ## Enums
 
-### Process Mode
+### Process Type
 
 - **PHYSICS_PROCESS**: Updates the camera during the physics process, ensuring it is in sync with physics-based movements and calculations.
 - **IDLE_PROCESS**: Updates the camera during the idle process, which is suitable for non-physics related movements and effects.
@@ -54,10 +54,10 @@ Introducing the ProCam2D plugin! ProCam2D is the ultimate camera for all your 2D
 - `track_multiple_objects`: `bool` - Enables tracking multiple objects using the PCTrackPoint node.
 - `target_radius`: `float` - Controls the space the target takes on screen when tracking multiple objects.
 
-### Offset and Process Mode
+### Offset and Process Type
 
 - `offset`: `Vector2` - Offset from the target position. Useful for looking around.
-- `process_mode`: `int` - Determines if the camera updates in `PHYSICS_PROCESS` or `IDLE_PROCESS` mode.
+- `process_type`: `int` - Determines if the camera updates in `PHYSICS_PROCESS` or `IDLE_PROCESS` mode.
 - `offset_smoothly`: `bool` - Smooth transition for offset changes.
 - `offset_speed`: `float` - Speed of the offset transition.
 
