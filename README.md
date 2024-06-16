@@ -101,7 +101,7 @@ ProCam.start_shake(types, duration, magnitude, speed)
 
 #### Parameters
 
-- `types`: `Array` - Types of screen shake (e.g., `SCREEN_SHAKE_HORIZONTAL`, `SCREEN_SHAKE_VERTICAL`).
+- `types`: `Array` - Types of screen shakes to be combined separated by a comma(e.g., `[SCREEN_SHAKE_HORIZONTAL`, `SCREEN_SHAKE_VERTICAL]`).
 - `duration`: `float` - Duration of the shake.
 - `magnitude`: `float` - Magnitude of the shake.
 - `speed`: `float` - Speed of the shake.
@@ -166,8 +166,8 @@ func on_player_approached_sign():
 
 ```gdscript
 func on_explosion():
-    # Apply a random screen shake effect with specified parameters
-    var types = [SCREEN_SHAKE_RANDOM]
+    # Apply a random screen shake and zoom shake effect with specified parameters
+    var types = [SCREEN_SHAKE_RANDOM,SCREEN_SHAKE_ZOOM]
     var duration = 0.5
     var magnitude = 4.0
     var speed = 25.0
