@@ -167,7 +167,7 @@ func on_player_approached_sign():
 ```gdscript
 func on_explosion():
     # Apply a random screen shake effect with specified parameters
-    var types = [SCREEN_SHAKE_HORIZONTAL, SCREEN_SHAKE_VERTICAL]
+    var types = [SCREEN_SHAKE_RANDOM]
     var duration = 0.5
     var magnitude = 4.0
     var speed = 25.0
@@ -215,8 +215,7 @@ func on_treasure_found():
 ## Installation
 
 1. Download or clone this repository into your Godot project.
-2. Move the `addons/ProCam2D` directory into the `addons` directory of your Godot project.
-3. Enable the plugin in Godot: Go to `Project` -> `Project Settings` -> `Plugins` and enable `ProCam2D`.
+2. Enable the plugin in Godot: Go to `Project` -> `Project Settings` -> `Plugins` and enable `ProCam2D`.
 
 ## Contributing
 
