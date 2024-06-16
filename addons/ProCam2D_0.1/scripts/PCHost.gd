@@ -135,9 +135,9 @@ func _setup_camera() -> void:
 	_camera = Camera2D.new()
 	_camera.ignore_rotation = false
 	var grandpa = get_parent().get_parent()
-	yield(grandpa,"ready")
+	await grandpa.ready
 	grandpa.add_child(_camera)
-    _camera.make_current()
+	_camera.make_current()
 
 func _setup_target_properties():
 	if not _target_node:
@@ -187,7 +187,7 @@ func _main_loop(delta: float) -> void:
 	# Smooth offset
 	var offset_duration: float = (1.0 / _offset_speed if _offset_speed != 0 else 1 / 0.1)
 	if _offset_smoothly:
-		_cur_offset = _cur_offset.linear_interpolate(_target_offset, _exp_smoothing(offset_duration, delta))
+		_cur_offset = _cur_offset.lerp(_target_offset, _exp_smoothing(offset_duration, delta))
 	else:
 		_cur_offset = _target_offset
 		
@@ -250,7 +250,7 @@ func _main_loop(delta: float) -> void:
 	# Smooth zoom
 	var zoom_easing_duration = 1.0 / _zoom_speed if _zoom_speed != 0 else 1 / 0.1
 	if _zoom_smoothly:
-		_cur_zoom = _cur_zoom.linear_interpolate(_tgt_zoom, _exp_smoothing(zoom_easing_duration, delta))
+		_cur_zoom = _cur_zoom.lerp(_tgt_zoom, _exp_smoothing(zoom_easing_duration, delta))
 	else:
 		_cur_zoom = _tgt_zoom
 
@@ -324,7 +324,7 @@ func _drag_margins_refactoring() -> Vector2:
 		if _margin_offset_points.point2.x - 5 > _margin_offset_points.offset.x + margin_offset_calculation.x:
 			_margin_offset_points.offset.x -= margin_offset_calculation.x
 	else:
-		_margin_offset_points.offset.x = lerp(_margin_offset_points.offset.x, 0, 0.1)
+		_margin_offset_points.offset.x = lerp(_margin_offset_points.offset.x, 0.0, 0.1)
 	
 	# Vertical margin
 	if _enable_v_margins:
@@ -333,7 +333,7 @@ func _drag_margins_refactoring() -> Vector2:
 		if _margin_offset_points.point2.y - 5 > _margin_offset_points.offset.y + margin_offset_calculation.y:
 			_margin_offset_points.offset.y -= margin_offset_calculation.y
 	else:
-		_margin_offset_points.offset.y = lerp(_margin_offset_points.offset.y, 0, 0.1)
+		_margin_offset_points.offset.y = lerp(_margin_offset_points.offset.y, 0.0, 0.1)
 
 	_margin_offset_points.offset.x = clamp(_margin_offset_points.offset.x, _margin_offset_points.point2.x, _margin_offset_points.point1.x)
 	_margin_offset_points.offset.y = clamp(_margin_offset_points.offset.y, _margin_offset_points.point2.y, _margin_offset_points.point1.y)
@@ -546,7 +546,7 @@ func _start_shake(types: Array, duration: float, magnitude: float, speed: float)
 
 func _update_shakes():
 	if _screen_shake_data["is_shaking"]:
-		if not _screen_shake_data["active_shakes"].empty():
+		if not _screen_shake_data["active_shakes"].is_empty():
 			var total_offset: Vector2
 			var total_zoom: Vector2
 			var total_rotation: float
@@ -565,7 +565,7 @@ func _update_shakes():
 
 func _set_target_node(value):
 	_target_node = value
-	update_configuration_warning()
+	update_configuration_warnings()
 	
 func _set_zoom_level(value):
 	emit_signal("zoom_level_changed", _zoom_level, value)
@@ -603,11 +603,11 @@ func _set_screen_center(_value):
 
 func _draw():
 	if Engine.is_editor_hint() and _draw_bounds or not Engine.is_editor_hint() and _show_bounds and _target:
-		draw_rect(_screen_rect, Color.white, false, 1.5,true)
-		draw_rect(_limit_rect,Color.red, false,1.5,true)
+		draw_rect(_screen_rect, Color.WHITE, false, 1.5)
+		draw_rect(_limit_rect,Color.RED, false,1.5)
 		# Draw margin bounds
 		if _enable_h_margins or _enable_v_margins:
-			draw_rect(_margin_rect, Color.yellow, false, 1.5,true)
+			draw_rect(_margin_rect, Color.YELLOW, false, 1.5)
 
 func _get_configuration_warning():
 	if _target_node:
