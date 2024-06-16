@@ -262,7 +262,7 @@ func _update_camera():
 		return
 	var final_pos: Vector2 =  _cur_pos + (_screen_shake_data.offset if _screen_shake_data.is_shaking else Vector2.ZERO) + _drag_margins_refactoring() #if !tracking_multiple_objects else Vector2.ZERO
 	var final_rot: float = _cur_rot + (_screen_shake_data.rotation_offset if _screen_shake_data.is_shaking else 0)
-	var final_zoom: Vector2 = (_cur_zoom + (_screen_shake_data.zoom_offset if _screen_shake_data.is_shaking else Vector2.ZERO))
+	var final_zoom: Vector2 = Vector2.ONE / (_cur_zoom + (_screen_shake_data.zoom_offset if _screen_shake_data.is_shaking else Vector2.ZERO))
 	var final_offset: Vector2 = _cur_offset.rotated(_cur_rot)
 	_camera.offset = final_offset
 	_camera.process_mode = _process_mode
@@ -426,9 +426,9 @@ func _track_objects() -> void:
 	var target_length = max(aabb_size.x, aabb_size.y)
 	var final_zoom = (target_length * _zoom_level) / max(_vp_size.x, _vp_size.y)
 	if final_zoom > _zoom_level:
-		_tgt_zoom = Vector2.ONE / Vector2(final_zoom, final_zoom)
+		_tgt_zoom = Vector2(final_zoom, final_zoom)
 	else:
-		_tgt_zoom = Vector2.ONE / Vector2(_zoom_level, _zoom_level)
+		_tgt_zoom = Vector2(_zoom_level, _zoom_level)
 
 func _predict_future_position(current_position: float, velocity: float, prediction_time: float) -> float:
 	return current_position + velocity * prediction_time
@@ -590,13 +590,13 @@ func _set_rotate(value:bool):
 		emit_signal("rotation_enabled")
 	else: emit_signal("rotation_disabled")
 
-func _change_target_to(new_target: Node) -> void:
+func _change_target_to(new_target: Node2D) -> void:
 	var old_target = _target_node
 	_target = new_target
 	emit_signal("target_changed", _target, old_target)
 
 func _get_screen_center() -> Vector2:
-	return _camera.get_camera_screen_center()
+	return _camera.get_screen_center_position()
 	
 func _set_screen_center(_value):
 	printerr("You can't directly change the screen center. Use current_position")

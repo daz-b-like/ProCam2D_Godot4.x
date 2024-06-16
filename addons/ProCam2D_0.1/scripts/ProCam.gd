@@ -68,16 +68,17 @@ var top_limit: float: get = get_tl, set = set_tl
 var bottom_limit: float: get = get_bl, set = set_bl
 var enable_v_margins: bool: get = get_vm, set = set_vm
 var enable_h_margins: bool: get = get_hm, set = set_hm
-var drag_left_margin: float: get = get_lm, set = set_lm
-var drag_right_margin: float: get = get_rm, set = set_rm
-var drag_top_margin: float: get = get_tm, set = set_tm
-var drag_bottom_margin: float: get = get_bm, set = set_bm
+var drag_margin_left: float: get = get_lm, set = set_lm
+var drag_margin_right: float: get = get_rm, set = set_rm
+var drag_margin_top: float: get = get_tm, set = set_tm
+var drag_margin_bottom: float: get = get_bm, set = set_bm
 var screen_center: Vector2: get = get_sc, set = set_sc
 var ACTIVE_PROCAM: Node
 
 func _ready() -> void:
 	if get_tree().has_group("procam"):
 			ACTIVE_PROCAM = get_tree().get_nodes_in_group("procam")[0]
+
 
 # Helper functions
 func _ensure_active_procam() -> bool:
@@ -98,10 +99,9 @@ func start_shake(types: = [SCREEN_SHAKE_PERLIN], duration: float = 0.3, magnitud
 		ACTIVE_PROCAM._start_shake(types, duration, magnitude, speed)
 
 # Property setters and getters
-func set_target(value: Object):
+func set_target(value: Node2D):
 	if _ensure_active_procam():
-		target = value
-		ACTIVE_PROCAM._change_target_to(target)
+		ACTIVE_PROCAM._change_target_to(value)
 
 func get_target() -> Node2D:
 	return _get_active_procam_value("_target")
@@ -122,7 +122,7 @@ func set_zoom_level(value):
 	_set_active_procam_value("_zoom_level", float(value))
 
 func get_zoom_level() -> float:
-	return _get_active_procam_value("_cur_zoom")
+	return _get_active_procam_value("_cur_zoom").x
 
 func set_tmo(value: bool):
 	_set_active_procam_value("_tracking_multiple_objects", value)
