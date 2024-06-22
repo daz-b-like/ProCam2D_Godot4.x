@@ -7,6 +7,12 @@
 
 Introducing the ProCam2D plugin! ProCam2D is the ultimate camera for all your 2D needs. Its designed to give you precise control over 2D camera behavior, whether you want to add smooth camera movement, dynamic zoom, or exciting screen shake effects. Our ProCam2D plugin, coupled with the TrackPoint node and a convenient Autoload script, can follow the action in your game with style and precision.
 
+## Support and Donations
+
+If you find ProCam2D useful and would like to support its development, consider making a donation. Your support helps me continue improving the plugin and creating more features for the community. Thank you!
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/dazlike)
+
 ## Features
 
 - Target-based camera tracking with dynamic target switching.
