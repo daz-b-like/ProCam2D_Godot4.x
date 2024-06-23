@@ -188,6 +188,7 @@ func _main_loop(delta: float) -> void:
 	_last_velocity = velocity
 
 	# Smooth offset
+	var offset_duration: float = (1.0 / _offset_speed if _offset_speed != 0.0 else 1 / 0.1)
 	if _drag_type != SmoothType.SCREENS:
 		if _offset_smoothly:
 			_cur_offset = _cur_offset.linear_interpolate(_target_offset, _exp_smoothing(offset_duration, delta))
