@@ -188,11 +188,12 @@ func _main_loop(delta: float) -> void:
 	_last_velocity = velocity
 
 	# Smooth offset
-	var offset_duration: float = (1.0 / _offset_speed if _offset_speed != 0 else 1 / 0.1)
-	if _offset_smoothly:
-		_cur_offset = _cur_offset.lerp(_target_offset, _exp_smoothing(offset_duration, delta))
-	else:
-		_cur_offset = _target_offset
+	if _drag_type != SmoothType.SCREENS:
+		if _offset_smoothly:
+			_cur_offset = _cur_offset.linear_interpolate(_target_offset, _exp_smoothing(offset_duration, delta))
+		else:
+			_cur_offset = _target_offset
+	else: _cur_offset = Vector2.ZERO
 		
 	var predicted_target_position:Vector2 = Vector2.ZERO
 	predicted_target_position.x =  _predict_future_position(_tgt_pos.x, velocity.x, (_prediction_time.x/10 if _prediction_time.x!=0 else 0.01))
