@@ -15,13 +15,13 @@ If you find ProCam2D useful and would like to support its development, consider 
 
 ## Features
 
+- Controlled by a singleton named `ProCam` for efficiency. This means the camera can be accessed globally in any script.
 - Target-based camera tracking with dynamic target switching.
 - Smooth transition and offset adjustments
 - Various screen shake effects
 - Flexible drag and rotation controls
 - Zoom and boundary limits
-- Multi-object tracking with target radius adjustment
-- Controlled by a singleton named `ProCam` for efficiency. 
+- Multi-object tracking with target radius adjustment 
 
 ## Enums
 
