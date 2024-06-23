@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckcs2iaxtdohx"
-path="res://.godot/imported/ParallaxLayer_icon.png-8f1fd331cc34f33dde9a49c46401642e.ctex"
+uid="uid://crdtsdrd8qyyv"
+path="res://.godot/imported/ProCam2D_icon.png-6df85e72ce94ded7a47c540e92cd0078.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/ProCam2D_0.1/icons/ParallaxLayer_icon.png"
-dest_files=["res://.godot/imported/ParallaxLayer_icon.png-8f1fd331cc34f33dde9a49c46401642e.ctex"]
+source_file="res://addons/ProCam2D/icons/ProCam2D_icon.png"
+dest_files=["res://.godot/imported/ProCam2D_icon.png-6df85e72ce94ded7a47c540e92cd0078.ctex"]
 
 [params]
 

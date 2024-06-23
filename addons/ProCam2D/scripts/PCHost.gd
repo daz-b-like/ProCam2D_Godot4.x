@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2024 dazlike
+#Copyright (c) 2024 Daz B. Like
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,8 @@ enum SmoothType {
 	PRED,
 	SPRING_DAMP,
 	ADAPTIVE,
-	SMOOTH_DAMP
+	SMOOTH_DAMP,
+	SCREENS
 }
 
 const MIN_VELOCITY_THRESHOLD: float = 0.0001
@@ -104,6 +105,8 @@ var _process_mode: int = ProcType.PHYS_PROC: set = _set_process_mode
 var _screen_center: Vector2: get = _get_screen_center, set = _set_screen_center
 var _screen_rect: Rect2 = Rect2()
 var _margin_rect: Rect2 = Rect2()
+var _target_screen_position: Vector2 #SmoothType.SCREENS
+var _is_transitioning: bool = false #SmoothType.SCREENS
 
 var _enable_v_margins: bool = false
 var _enable_h_margins: bool = false
@@ -198,42 +201,103 @@ func _main_loop(delta: float) -> void:
 	var scroll_easing_duration_x: float = (1.0 / _drag_speed.x if _drag_speed.x != 0 else 1 / 0.1)
 	var scroll_easing_duration_y: float = (1.0 / _drag_speed.y if _drag_speed.y != 0 else 1 / 0.1)
 
-	if _drag_smoothly:
-		match _drag_type:
-			SmoothType.PRED:
-				var result_x = _smooth_damp(_cur_pos.x, predicted_target_position.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
-				_cur_pos.x = result_x["new_position"]
-				_current_velocity_x = result_x["new_velocity"]
+	if _drag_type != SmoothType.SCREENS:
+		if _drag_smoothly:
+			match _drag_type:
+				SmoothType.PRED:
+					var result_x = _smooth_damp(_cur_pos.x, predicted_target_position.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
+					_cur_pos.x = result_x["new_position"]
+					_current_velocity_x = result_x["new_velocity"]
 
-				var result_y = _smooth_damp(_cur_pos.y, predicted_target_position.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
-				_cur_pos.y = result_y["new_position"]
-				_current_velocity_y = result_y["new_velocity"]
-			SmoothType.SPRING_DAMP:
-				var result_x = _spring_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, 20, _drag_speed.x, delta)
-				_cur_pos.x = result_x["new_position"]
-				_current_velocity_x = result_x["new_velocity"]
+					var result_y = _smooth_damp(_cur_pos.y, predicted_target_position.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
+					_cur_pos.y = result_y["new_position"]
+					_current_velocity_y = result_y["new_velocity"]
+				SmoothType.SPRING_DAMP:
+					var result_x = _spring_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, 20, _drag_speed.x, delta)
+					_cur_pos.x = result_x["new_position"]
+					_current_velocity_x = result_x["new_velocity"]
 
-				var result_y = _spring_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, 20, _drag_speed.y, delta)
-				_cur_pos.y = result_y["new_position"]
-				_current_velocity_y = result_y["new_velocity"]
-			SmoothType.ADAPTIVE:
-				var result_x = _adaptive_smooth_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, INF, delta)
-				_cur_pos.x = result_x["new_position"]
-				_current_velocity_x = result_x["new_velocity"]
+					var result_y = _spring_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, 20, _drag_speed.y, delta)
+					_cur_pos.y = result_y["new_position"]
+					_current_velocity_y = result_y["new_velocity"]
+				SmoothType.ADAPTIVE:
+					var result_x = _adaptive_smooth_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, INF, delta)
+					_cur_pos.x = result_x["new_position"]
+					_current_velocity_x = result_x["new_velocity"]
 
-				var result_y = _adaptive_smooth_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, INF, delta)
-				_cur_pos.y = result_y["new_position"]
-				_current_velocity_y = result_y["new_velocity"]
-			SmoothType.SMOOTH_DAMP:
-				var result_x = _smooth_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
-				_cur_pos.x = result_x["new_position"]
-				_current_velocity_x = result_x["new_velocity"]
+					var result_y = _adaptive_smooth_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, INF, delta)
+					_cur_pos.y = result_y["new_position"]
+					_current_velocity_y = result_y["new_velocity"]
+				SmoothType.SMOOTH_DAMP:
+					var result_x = _smooth_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
+					_cur_pos.x = result_x["new_position"]
+					_current_velocity_x = result_x["new_velocity"]
 
-				var result_y = _smooth_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
-				_cur_pos.y = result_y["new_position"]
-				_current_velocity_y = result_y["new_velocity"]
+					var result_y = _smooth_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
+					_cur_pos.y = result_y["new_position"]
+					_current_velocity_y = result_y["new_velocity"]
+		else:
+			_cur_pos = _tgt_pos
 	else:
-		_cur_pos = _tgt_pos
+		if not _tracking_multiple_objects:
+			if _drag_smoothly:
+				var screen_size = get_viewport_rect().size
+
+				if not _is_transitioning:
+					_target_screen_position = _cur_pos
+
+					if _tgt_pos.x < _cur_pos.x - screen_size.x / 2:
+						_target_screen_position.x -= screen_size.x
+					elif _tgt_pos.x > _cur_pos.x + screen_size.x / 2:
+						_target_screen_position.x += screen_size.x
+
+					if _tgt_pos.y < _cur_pos.y - screen_size.y / 2:
+						_target_screen_position.y -= screen_size.y
+					elif _tgt_pos.y > _cur_pos.y + screen_size.y / 2:
+						_target_screen_position.y += screen_size.y
+
+					if _target_screen_position != _cur_pos:
+						_is_transitioning = true
+
+				if _is_transitioning:
+					var result_x = _smooth_damp(_cur_pos.x, _target_screen_position.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
+					_cur_pos.x = result_x["new_position"]
+					_current_velocity_x = result_x["new_velocity"]
+
+					var result_y = _smooth_damp(_cur_pos.y, _target_screen_position.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
+					_cur_pos.y = result_y["new_position"]
+					_current_velocity_y = result_y["new_velocity"]
+
+					if abs(_cur_pos.x - _target_screen_position.x) < 1.0 and abs(_cur_pos.y - _target_screen_position.y) < 1.0:
+						_cur_pos = _target_screen_position
+						_is_transitioning = false
+				
+			else:
+				
+				var screen_size = get_viewport_rect().size
+				var new_x = _cur_pos.x
+				var new_y = _cur_pos.y
+
+				if _tgt_pos.x < _cur_pos.x - screen_size.x / 2:
+					new_x -= screen_size.x
+				elif _tgt_pos.x > _cur_pos.x + screen_size.x / 2:
+					new_x += screen_size.x
+
+				if _tgt_pos.y < _cur_pos.y - screen_size.y / 2:
+					new_y -= screen_size.y
+				elif _tgt_pos.y > _cur_pos.y + screen_size.y / 2:
+					new_y += screen_size.y
+
+				_cur_pos.x = new_x
+				_cur_pos.y = new_y
+		else :
+			var result_x = _smooth_damp(_cur_pos.x, _tgt_pos.x, _current_velocity_x, scroll_easing_duration_x, INF, delta)
+			_cur_pos.x = result_x["new_position"]
+			_current_velocity_x = result_x["new_velocity"]
+
+			var result_y = _smooth_damp(_cur_pos.y, _tgt_pos.y, _current_velocity_y, scroll_easing_duration_y, INF, delta)
+			_cur_pos.y = result_y["new_position"]
+			_current_velocity_y = result_y["new_velocity"]
 
 	# Clamp positions within limits
 	if not _limit_smoothly:
@@ -288,8 +352,8 @@ func _update_screen_and_margin_rects():
 	queue_redraw()
 	if not (Engine.is_editor_hint() and _draw_bounds or !Engine.is_editor_hint() and _show_bounds):
 		return
-	var window_width:float = ProjectSettings.get_setting("display/window/size/viewport_width")
-	var window_height:float = ProjectSettings.get_setting("display/window/size/viewport_height")
+	var window_width:float = get_viewport_rect().size.x
+	var window_height:float = get_viewport_rect().size.y
 	var window_size = Vector2(window_width, window_height)
 	_vp_size = window_size * _cur_zoom
 
@@ -302,8 +366,8 @@ func _update_screen_and_margin_rects():
 	_margin_rect = Rect2(margin_left - position.x - _cur_offset.x, margin_top - position.y - _cur_offset.y, margin_right - margin_left, margin_bottom - margin_top)
 
 func _drag_margins_refactoring() -> Vector2:
-	var window_width:float = ProjectSettings.get_setting("display/window/size/viewport_width")
-	var window_height:float = ProjectSettings.get_setting("display/window/size/viewport_height")
+	var window_width:float = get_viewport_rect().size.x
+	var window_height:float = get_viewport_rect().size.y
 	var window_size = Vector2(window_width, window_height)
 	_vp_size = window_size * _cur_zoom
 
@@ -338,13 +402,13 @@ func _drag_margins_refactoring() -> Vector2:
 	_margin_offset_points.offset.x = clamp(_margin_offset_points.offset.x, _margin_offset_points.point2.x, _margin_offset_points.point1.x)
 	_margin_offset_points.offset.y = clamp(_margin_offset_points.offset.y, _margin_offset_points.point2.y, _margin_offset_points.point1.y)
 	
-	return _margin_offset_points.offset.rotated(_cur_rot) if !_tracking_multiple_objects else Vector2.ZERO
+	return _margin_offset_points.offset.rotated(_cur_rot) if !_tracking_multiple_objects and _drag_type != SmoothType.SCREENS else Vector2.ZERO
 
 func _track_objects() -> void:
 	if !_tracking_multiple_objects:
 		return
-	var window_width:float = ProjectSettings.get_setting("display/window/size/viewport_width")
-	var window_height:float = ProjectSettings.get_setting("display/window/size/viewport_height")
+	var window_width:float = get_viewport_rect().size.x
+	var window_height:float = get_viewport_rect().size.y
 	var window_size = Vector2(window_width, window_height)
 	_vp_size = window_size
 	var min_x = INF
@@ -539,7 +603,7 @@ func _smooth_damp(current: float, target: float, current_velocity: float, smooth
 	return {"new_position": new_position, "new_velocity": current_velocity}
 
 func _start_shake(types: Array, duration: float, magnitude: float, speed: float) -> void:
-	var shake = preload("res://addons/ProCam2D_0.1/scripts/PCSShakes.gd").new()
+	var shake = preload("res://addons/ProCam2D/scripts/PCSShakes.gd").new()
 	shake.initialize(self, types, duration, magnitude, speed, _process_mode)
 	add_child(shake)
 	_screen_shake_data["is_shaking"] = true
@@ -685,7 +749,7 @@ func _get_property_list():
 		"name": "_drag_type",
 		"type": TYPE_INT,
 		"hint": PROPERTY_HINT_ENUM,
-		"hint_string": "Predictive,Spring damp,Adaptive,Smooth damp"
+		"hint_string": "Predictive,Spring damp,Adaptive,Smooth damp, Screens"
 	})
 	if _drag_type == SmoothType.PRED:
 		props.append({

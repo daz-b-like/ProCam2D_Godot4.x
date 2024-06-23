@@ -46,6 +46,7 @@ If you find ProCam2D useful and would like to support its development, consider 
 - **DRAG_TYPE_SPRING_DAMP**: Uses a spring-damping system to create a smooth follow effect, like a spring pulling the camera towards the target.
 - **DRAG_TYPE_ADAPTIVE**: Adaptive drag that adjusts its speed based on the target's movement, providing a responsive camera behavior.
 - **DRAG_TYPE_SMOOTH_DAMP**: Smooth damp drag that gradually smooths out the camera movement over time, ensuring fluid transitions.
+- **DRAG_TYPE_SCREENS**: The camera transitions to the next part of the screen where the target moves. Similar to games that use screens or rooms e.g undertale, pinchstripe. The transition can be either smooth or abrupt depending on weather `drag_smoothly` is `true` or `false`.
 
 ## Properties
 

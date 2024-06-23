@@ -1,3 +1,4 @@
+
 @tool
 #MIT License
 
@@ -25,12 +26,20 @@ extends EditorPlugin
 const PROCAM2D: String = "ProCam2D"
 #const PROCAMPARALLAX: String = "PCParallaxLayer"
 const PROCAMTRACKPOINT: String = "PCTrackPoint"
+var good_load: bool = false
 
 func _enter_tree() -> void:
+	var pcam = preload("res://addons/ProCam2D/scripts/ProCam2D.gd")
+	var pcam_icon = preload("res://addons/ProCam2D/icons/ProCam2D_icon.png")
+	var pcamtp = preload("res://addons/ProCam2D/scripts/PCTrackPoint.gd")
+	var pcamtp_icon = preload("res://addons/ProCam2D/icons/TrackPoint_icon.png")
 	#ProCam Nodes
-	add_custom_type(PROCAM2D, "Node2D", preload("res://addons/ProCam2D_0.1/scripts/ProCam2D.gd"), preload("res://addons/ProCam2D_0.1/icons/ProCam2D_icon.png"))
-	add_custom_type(PROCAMTRACKPOINT, "Node2D", preload("res://addons/ProCam2D_0.1/scripts/PCTrackPoint.gd"), preload("res://addons/ProCam2D_0.1/icons/TrackPoint_icon.png"))
-	add_autoload_singleton("ProCam","res://addons/ProCam2D_0.1/scripts/ProCam.gd")
+	if pcam != null and pcam_icon != null and pcamtp != null and pcamtp_icon != null:
+		add_custom_type(PROCAM2D, "Node2D", pcam, pcam_icon)
+		add_custom_type(PROCAMTRACKPOINT, "Node2D", pcamtp, pcamtp_icon)
+		add_autoload_singleton("ProCam","res://addons/ProCam2D/scripts/ProCam.gd")
+		good_load = true
+
 func _exit_tree() -> void:
 	remove_custom_type(PROCAM2D)
 	remove_custom_type(PROCAMTRACKPOINT)

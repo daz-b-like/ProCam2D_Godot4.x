@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7jb4ov5ujeae"
-path="res://.godot/imported/TrackPoint_icon.png-d20e9c1c9fba8530d402de8fe5dbce97.ctex"
+uid="uid://ckcs2iaxtdohx"
+path="res://.godot/imported/ParallaxLayer_icon.png-249406c433f062ed27b1841cd47c50d8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/ProCam2D_0.1/icons/TrackPoint_icon.png"
-dest_files=["res://.godot/imported/TrackPoint_icon.png-d20e9c1c9fba8530d402de8fe5dbce97.ctex"]
+source_file="res://addons/ProCam2D/icons/ParallaxLayer_icon.png"
+dest_files=["res://.godot/imported/ParallaxLayer_icon.png-249406c433f062ed27b1841cd47c50d8.ctex"]
 
 [params]
 
