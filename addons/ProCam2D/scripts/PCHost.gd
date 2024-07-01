@@ -191,10 +191,11 @@ func _main_loop(delta: float) -> void:
 	var offset_duration: float = (1.0 / _offset_speed if _offset_speed != 0.0 else 1 / 0.1)
 	if _drag_type != SmoothType.SCREENS:
 		if _offset_smoothly:
-			_cur_offset = _cur_offset.linear_interpolate(_target_offset, _exp_smoothing(offset_duration, delta))
+			_cur_offset = _cur_offset.lerp(_target_offset, _exp_smoothing(offset_duration, delta))
 		else:
 			_cur_offset = _target_offset
 	else: _cur_offset = Vector2.ZERO
+		
 		
 	var predicted_target_position:Vector2 = Vector2.ZERO
 	predicted_target_position.x =  _predict_future_position(_tgt_pos.x, velocity.x, (_prediction_time.x/10 if _prediction_time.x!=0 else 0.01))
@@ -490,11 +491,13 @@ func _track_objects() -> void:
 
 	# Adjust final zoom level calculation to avoid excessive unzooming
 	var target_length = max(aabb_size.x, aabb_size.y)
-	var final_zoom = (target_length * _zoom_level) / max(_vp_size.x, _vp_size.y)
-	if final_zoom > _zoom_level:
+	var final_zoom = ((target_length * max(_zoom_level,1)) / max(_vp_size.x, _vp_size.y)) / max(_zoom_level,1)
+	if final_zoom > _zoom_level :
 		_tgt_zoom = Vector2(final_zoom, final_zoom)
 	else:
-		_tgt_zoom = Vector2(_zoom_level, _zoom_level)
+		_tgt_zoom = Vector2(_zoom_level,_zoom_level)
+	print(final_zoom)
+	print(_zoom_level)
 
 func _predict_future_position(current_position: float, velocity: float, prediction_time: float) -> float:
 	return current_position + velocity * prediction_time
