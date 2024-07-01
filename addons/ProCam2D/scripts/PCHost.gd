@@ -247,7 +247,7 @@ func _main_loop(delta: float) -> void:
 	else:
 		if not _tracking_multiple_objects:
 			if _drag_smoothly:
-				var screen_size = get_viewport_rect().size
+				var screen_size = get_viewport_rect().size * _zoom_level
 
 				# Update target position based on elapsed time
 				if _time_elapsed - _last_update_time >= _update_interval:
