@@ -496,8 +496,6 @@ func _track_objects() -> void:
 		_tgt_zoom = Vector2(final_zoom, final_zoom)
 	else:
 		_tgt_zoom = Vector2(_zoom_level,_zoom_level)
-	print(final_zoom)
-	print(_zoom_level)
 
 func _predict_future_position(current_position: float, velocity: float, prediction_time: float) -> float:
 	return current_position + velocity * prediction_time
