@@ -105,8 +105,11 @@ var _process_mode: int = ProcType.PHYS_PROC: set = _set_process_mode
 var _screen_center: Vector2: get = _get_screen_center, set = _set_screen_center
 var _screen_rect: Rect2 = Rect2()
 var _margin_rect: Rect2 = Rect2()
-var _target_screen_position: Vector2 #SmoothType.SCREENS
-var _is_transitioning: bool = false #SmoothType.SCREENS
+#SmoothType.SCREENS
+var _target_screen_position: Vector2
+var _is_transitioning: bool = false
+var _last_update_time: float = 0.0
+var _update_interval: float = 0.2
 
 var _enable_v_margins: bool = false
 var _enable_h_margins: bool = false
@@ -246,8 +249,9 @@ func _main_loop(delta: float) -> void:
 			if _drag_smoothly:
 				var screen_size = get_viewport_rect().size
 
-				if not _is_transitioning:
-					_target_screen_position = _cur_pos
+				# Update target position based on elapsed time
+				if _time_elapsed - _last_update_time >= _update_interval:
+					_last_update_time = _time_elapsed
 
 					if _tgt_pos.x < _cur_pos.x - screen_size.x / 2:
 						_target_screen_position.x -= screen_size.x
