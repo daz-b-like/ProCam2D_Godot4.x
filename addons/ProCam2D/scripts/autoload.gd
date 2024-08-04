@@ -44,11 +44,6 @@ var top_margin: float = 0.3: set = set_top_margin, get = get_top_margin
 var bottom_margin: float = 0.3: set = set_bottom_margin, get = get_bottom_margin
 var cam: Node2D
 
-func _ready():
-	var cam_g = get_tree().get_nodes_in_group("procam")
-	if not cam_g.is_empty():
-		cam = cam_g[0]
-
 func start_cinematic(id):
 	cam.start_cinematic(id)
 
