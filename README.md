@@ -169,6 +169,11 @@ Attracts or repels the camera like a magnet.
 - `force: Vector2`: Defines the strength of the force applied to the camera when within the influence area, if `use_full_force` is disabled.
 - `falloff_curve: Curve`: A curve defining how the force diminishes with distance from the center of the influence area, if `use_full_force` is disabled.
 
+#### Signals
+
+-`magnet_entered()`: Emitted when the camera enters the magnet's area of influence
+-`magnet_exits()`: Emitted when the camera exits the magnet's area of influence
+
 ### ![PCamZoom Icon](https://i.ibb.co/VJbnTwD/pcam-zoom.png) PCamZoom
 
 Changes the zoom of the camera within its area of influence.
@@ -181,6 +186,12 @@ Changes the zoom of the camera within its area of influence.
 - `zoom_factor: float`: Factor by which the camera zooms in or out when within the influence area.
 - `gradual_zoom: bool`: Enables or disables gradual zooming when entering or exiting the influence area.
 
+#### Signals
+
+-`zoom_area_entered()`: Emitted when the camera enters the zoom's area of influence.
+-`zoom_area_exited()`: Emitted when the camera exits the zoom's area of influence.
+-`zoom_level_changed()`: Emitted when the zoom's zoom level changes.
+
 ### ![PCamRoom Icon](https://i.ibb.co/GVVLdYZ/pcam-room.png) PCamRoom
 
 Constrains the camera to an area it covers.
@@ -190,6 +201,10 @@ Constrains the camera to an area it covers.
 - `room_size: Vector2`: Defines the dimensions of the room or constrained area that the camera is limited to.
 - `zoom: float`: Sets the zoom level within the constrained room area.
 - `open_sides: BitMask`: Specifies which sides of the room are open (left, right, top, bottom). Checkboxes for each side allow for customizable room constraints.
+
+#### Signals
+-`room_entered(room)`: Emitted when the camera enters the room.
+-`room_exited(room)`: Emitted when the camera exits the room.
 
 ### ![PCamPath Icon](https://i.ibb.co/B2spgmh/pcam-path.png) PCamPath
 
