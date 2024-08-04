@@ -140,6 +140,7 @@ A node that the camera follows. It can be placed as a child of a player. Multipl
 - `offset: Vector2`: Sets the positional offset of the target.
 - `influence: Vector2`: Determines how much the target influences the camera movement. Values range from 0 (no influence) to 1+ (full influence).
 - `rotation_influence: float`: Determines how much the target's rotation influences the camera. Values range from 0 (no influence) to 1+ (full influence).
+- `disable_outside_limits: bool`: The camera stops following this node once it goes beyond it's limits.
 
 ### ![PCamCinematic Icon](https://i.ibb.co/QjHd0RT/pcam-cinematic.png) PCamCinematic
 
