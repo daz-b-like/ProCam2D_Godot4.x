@@ -171,8 +171,8 @@ Attracts or repels the camera like a magnet.
 
 #### Signals
 
--`magnet_entered()`: Emitted when the camera enters the magnet's area of influence
--`magnet_exits()`: Emitted when the camera exits the magnet's area of influence
+- `magnet_entered()`: Emitted when the camera enters the magnet's area of influence
+- `magnet_exits()`: Emitted when the camera exits the magnet's area of influence
 
 ### ![PCamZoom Icon](https://i.ibb.co/VJbnTwD/pcam-zoom.png) PCamZoom
 
@@ -188,9 +188,9 @@ Changes the zoom of the camera within its area of influence.
 
 #### Signals
 
--`zoom_area_entered()`: Emitted when the camera enters the zoom's area of influence.
--`zoom_area_exited()`: Emitted when the camera exits the zoom's area of influence.
--`zoom_level_changed()`: Emitted when the zoom's zoom level changes.
+- `zoom_area_entered()`: Emitted when the camera enters the zoom's area of influence.
+- `zoom_area_exited()`: Emitted when the camera exits the zoom's area of influence.
+- `zoom_level_changed()`: Emitted when the zoom's zoom level changes.
 
 ### ![PCamRoom Icon](https://i.ibb.co/GVVLdYZ/pcam-room.png) PCamRoom
 
@@ -203,8 +203,8 @@ Constrains the camera to an area it covers.
 - `open_sides: BitMask`: Specifies which sides of the room are open (left, right, top, bottom). Checkboxes for each side allow for customizable room constraints.
 
 #### Signals
--`room_entered(room)`: Emitted when the camera enters the room.
--`room_exited(room)`: Emitted when the camera exits the room.
+- `room_entered(room)`: Emitted when the camera enters the room.
+- `room_exited(room)`: Emitted when the camera exits the room.
 
 ### ![PCamPath Icon](https://i.ibb.co/B2spgmh/pcam-path.png) PCamPath
 
