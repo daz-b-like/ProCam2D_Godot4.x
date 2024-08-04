@@ -701,7 +701,7 @@ func stop_cinematic() -> void:
 func _get_cinematics_by_id(cinematic_id: String) -> Array:
 	var filtered_cinematics = []
 	for cinematic in _cinematics:
-		if cinematic.cinematic_id == cinematic_id and cinematic.priority >= 0:
+		if cinematic.cinematic_id == cinematic_id and cinematic.enabled and cinematic.priority >= 0:
 			filtered_cinematics.append(cinematic)
 	return filtered_cinematics
 
