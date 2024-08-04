@@ -1,6 +1,6 @@
 # ProCam2D - A Custom 2D Camera Node for Godot
 
-![procam wallpaper](https://i.ibb.co/FnsPZxb/procam-wallpaper.png)
+![procam icon](https://i.ibb.co/dkT2tPQ/procam-icon.png)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/dazlike)
 
