@@ -63,7 +63,7 @@ If you added an addon through the inspector, you can access it like this:
 func _ready():
     var shake_addon = procam.get_addons()[index] # Replace index with the index of the addon on the inspector. 
     shake_addon.shake() #Use this method to start any shake addon
-    shake_addon.shake() #Use this method to stop any shake addon
+    shake_addon.stop() # This is a method available to the screenshake addon see below for all available addons
 ```
 
    ![addon index](https://i.ibb.co/b7Tc6Vf/image.png)
