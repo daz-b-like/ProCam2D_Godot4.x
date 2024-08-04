@@ -36,7 +36,7 @@ func _enter_tree() -> void:
 	var pcam2d = preload("res://addons/ProCam2D/scripts/procam2d.gd")
 	var pcamtarget = preload("res://addons/ProCam2D/scripts/pcam_target.gd")
 	var pcamzoom = preload("res://addons/ProCam2D/scripts/procam_zoom.gd")
-	var pcamroom = preload("res://addons/ProCam2D/scripts/PCamRoom.gd")
+	var pcamroom = preload("res://addons/ProCam2D/scripts/pcam_room.gd")
 	var pcammagnet = preload("res://addons/ProCam2D/scripts/pcam_magnet.gd")
 	var pcamcinematic = preload("res://addons/ProCam2D/scripts/pcam_cinematicpoint.gd")
 	var pcampath = preload("res://addons/ProCam2D/scripts/pcam_path.gd")
