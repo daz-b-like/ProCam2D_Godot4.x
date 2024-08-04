@@ -95,6 +95,8 @@ var _cinematics: Array = []
 
 func _init() -> void:
 	add_to_group(GROUP_NAME)
+	if not procam.cam:
+		procam.cam = self
 
 func _ready() -> void:
 	super._ready()
