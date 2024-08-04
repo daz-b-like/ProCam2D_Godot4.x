@@ -25,9 +25,14 @@
 
 ### Basic Setup
 
-1. Add a `ProCam2D` node to your scene.
-2. Add one or more `PCamTarget` nodes as children of the objects you want the camera to follow.
-3. Configure the camera properties and target properties via the inspector.
+1. Press `CTRL` + `A` or the "+" icon on the scene tab to add a new node.
+2. Type "pcam" in the search box to filter the nodes and show all 7 ProCam2D nodes.
+   
+   ![Adding ProCam nodes](https://i.ibb.co/jhzqrWC/image.png)
+   
+3. Add a `ProCam2D` node to your scene.
+4. Add one or more `PCamTarget` nodes as children of the objects you want the camera to follow.
+5. Configure the camera properties and target properties via the inspector.
 
 ### Example: Basic Camera Setup
 
@@ -40,7 +45,19 @@ func _ready():
 
 ### Example: Adding Addons
 
-Addons can be easily added by dragging and dropping them into the inspector's addon array field or by code. Addons with the highest priority will bw run first.
+Addons can be easily added to the `ProCam2D` node by following these steps:
+1. Click on the `Addons` property on the inspector and increase its `Array` size:
+
+   ![Adding addons](https://i.ibb.co/bmqMV8j/image.png)
+
+2. Click on any [empty] fields and choose your addon from the list of resources:
+
+   ![Adding addons](https://i.ibb.co/3kBgXgw/image.png)
+
+3. Configure the addons properties:
+
+   ![Adding addons](https://i.ibb.co/vsWh0fG/image.png)
+   
 If you added an addon through the inspector, you can access it like this:
 ```gdscript
 func _ready():
@@ -49,18 +66,63 @@ func _ready():
     shake_addon.shake() #Use this method to stop any shake addon
 ```
 
+   ![addon index](https://i.ibb.co/b7Tc6Vf/image.png)
+
 To add an addon through code, use this method:
 ```gdscript
 func _ready():
     var shake_addon = PCamShake.new()
-    shake_addon.apply_preset(shake_addon.Preset.GUNSHOT) # See below for more info about addons
-    shake_addon.shake()
+    shake_addon.apply_preset(shake_addon.Preset.GUNSHOT) # This is a method available to the screenshake addon
+    procam.add_addon(shake_addon)
+    shake_addon.shake() # This is a method available to the screenshake addon see below for all available addons
 ```
-## Properties
+## Available addons
+
+### PCamShake
+
+This addon is used to add exciting screenshakes to your game.
+
+   ![shake](https://i.ibb.co/vsWh0fG/image.png)
 
 ### Enums
+- **ShakeType**
+  - `VERTICAL`: Shakes the screen vertically, moving up and down.
+  - `HORIZONTAL`: Shakes the screen horizontally, moving left and right.
+  - `RANDOM`: Generates random shakes in all directions, creating an unpredictable effect.
+  - `PERLIN`: Uses Perlin noise to generate smooth, natural-looking random shakes.
+  - `ROTATE`: Rotates the screen around its center point, simulating a rotational shake.
+  - `CIRCULAR`: Shakes the screen in a circular motion, combining horizontal and vertical movement.
+  - `ZOOM`: Simulates a zooming effect, shaking the screen by scaling in and out.
 
-## Properties
+- **Preset**
+  - `GUNSHOT`: A quick and sudden shake, simulating the recoil of a gunshot.
+  - `EARTHQUAKE`: A continuous and intense shaking, mimicking the effect of an earthquake.
+  - `HANDHELD`: Mimics the natural, unsteady movement of a handheld camera.
+  - `EXPLOSION`: A strong and rapid shake, representing the shockwave of an explosion.
+  - `IMPACT`: A brief, intense shake, simulating the effect of a sudden impact.
+  - `RUMBLE`: A low-frequency, continuous shaking effect, like a deep vibration.
+  - `VIBRATION`: A rapid, high-frequency shake, similar to a vibrating effect.
+  - `WOBBLY`: A smooth and gentle shaking, creating a wobbly, unsteady motion.
+  - 
+### Methods
+- `set_preset(preset: Preset)`: Sets the current shake effect to a predefined preset. E.g : `set_preset(PCamShake.Preset.GUNSHOT)`
+- `stop()`: Stops the current screen shake effect immediately.
+- `is_shaking() -> bool`: Returns a boolean indicating whether a screen shake effect is currently active.
+- `shake()`: Initiates a custom screen shake effect based on the current settings.
+
+### PCamGrids
+
+This addon is used to make the camera snap to grid. The snapping will be smooth or instant depending on the camera's `smooth_drag` property.
+
+   ![grids](https://i.ibb.co/3c649s5/image.png)
+
+### PCamMouseFollow
+
+This addon adds pointer influence to the camera. Can be used for side scrollers that use the mouse for aiming or looking around.
+
+![mouse folllow](https://i.ibb.co/27w1gJw/image.png)
+
+## ProCam2D Properties
 
 ### Enums
 
