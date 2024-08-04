@@ -195,6 +195,8 @@ This addon adds pointer influence to the camera. Can be used for side scrollers 
 
 A node that the camera follows. It can be placed as a child of a player. Multiple targets can be placed.
 
+   ![PCamTarget](https://i.ibb.co/JdyymHT/image.png)
+
 #### Properties
 
 - `priority: int`: Determines the active target when follow mode is set to SINGLE_TARGET. Higher priority targets are followed.
@@ -208,6 +210,8 @@ A node that the camera follows. It can be placed as a child of a player. Multipl
 
 Defines a point in a cinematic sequence. PCamCinematic nodes with the same id form a cinematic sequence which can be played with `procam.start_cinematic(id)`
 
+   ![PCamCinematic](https://i.ibb.co/FqkG4YD/image.png)
+
 #### Properties
 
 - `cinematic_id: string`: Identifier for the cinematic sequence, used to start and stop specific cinematic events. Can be an integer or string.
@@ -220,6 +224,8 @@ Defines a point in a cinematic sequence. PCamCinematic nodes with the same id fo
 ### ![PCamMagnet Icon](https://i.ibb.co/6yPtVfB/pcam-magnet.png)  PCamMagnet
 
 Attracts or repels the camera like a magnet.
+
+   ![PCamMagnet](https://i.ibb.co/z7TwFwf/image.png)
 
 #### Properties
 
@@ -240,6 +246,8 @@ Attracts or repels the camera like a magnet.
 
 Changes the zoom of the camera within its area of influence.
 
+   ![PCamZoom](https://i.ibb.co/NY8sLGP/image.png)
+
 #### Properties
 
 - `zoom_shape: ZoomShape`: Defines the shape of the zoom influence area. Options include `CIRCLE` or `RECTANGLE`.
@@ -258,6 +266,8 @@ Changes the zoom of the camera within its area of influence.
 
 Constrains the camera to an area it covers.
 
+   ![PCamRoom](https://i.ibb.co/C6XjM16/image.png)
+
 #### Properties
 
 - `room_size: Vector2`: Defines the dimensions of the room or constrained area that the camera is limited to.
@@ -272,8 +282,9 @@ Constrains the camera to an area it covers.
 
 Constrains the camera to a path on a specified axis.
 
-#### Properties
+  ![PCamPath](https://i.ibb.co/QHV9Xtq/image.png)
 
+#### Properties
 - `constraint_axis: AxisConstraint`: Defines which axis (X or Y) the camera is constrained to follow along the path. Options include `X` and `Y`.
 
 ## Addons
