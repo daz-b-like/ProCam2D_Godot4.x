@@ -144,7 +144,7 @@ A node that the camera follows. It can be placed as a child of a player. Multipl
 
 ### ![PCamCinematic Icon](https://i.ibb.co/QjHd0RT/pcam-cinematic.png) PCamCinematic
 
-Allows creating cut scenes.
+Defines a point in a cinematic sequence. PCamCinematic nodes with the same id form a cinematic sequence which can be played with `procam.start_cinematic(id)`
 
 #### Properties
 
