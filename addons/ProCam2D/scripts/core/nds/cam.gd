@@ -255,8 +255,9 @@ func _update_targets(delta) -> void:
 	_targets.clear()
 	for target in _get_nodes_in_group("procam_targets"):
 		if target.enabled:
-			target._update_velocity(delta)
-			_targets.append(target)
+			if not target.disable_outside_limits or (target.disable_outside_limits and _calculate_limit_rect()[2].has_point(to_local(target.global_position))):
+				target._update_velocity(delta)
+				_targets.append(target)
 	_target_rotation = _calculate_target_rotation()
 	_target_position = _calculate_target_position()
 	_target_zoom = _calculate_target_zoom()
