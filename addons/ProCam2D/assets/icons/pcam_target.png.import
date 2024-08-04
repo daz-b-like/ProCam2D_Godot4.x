@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crdtsdrd8qyyv"
-path="res://.godot/imported/ProCam2D_icon.png-6df85e72ce94ded7a47c540e92cd0078.ctex"
+uid="uid://db0437xg68crl"
+path="res://.godot/imported/pcam_target.png-74f658309b0ca8b48bf428006da9853d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/ProCam2D/icons/ProCam2D_icon.png"
-dest_files=["res://.godot/imported/ProCam2D_icon.png-6df85e72ce94ded7a47c540e92cd0078.ctex"]
+source_file="res://addons/ProCam2D/assets/icons/pcam_target.png"
+dest_files=["res://.godot/imported/pcam_target.png-74f658309b0ca8b48bf428006da9853d.ctex"]
 
 [params]
 

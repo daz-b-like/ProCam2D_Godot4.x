@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7jb4ov5ujeae"
-path="res://.godot/imported/TrackPoint_icon.png-c39bcc0ea342289fc3f6baea7b243102.ctex"
+uid="uid://glxyhowttbni"
+path="res://.godot/imported/pcam_room.png-67f9a66d74bb835fa525247cfccd66e4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/ProCam2D/icons/TrackPoint_icon.png"
-dest_files=["res://.godot/imported/TrackPoint_icon.png-c39bcc0ea342289fc3f6baea7b243102.ctex"]
+source_file="res://addons/ProCam2D/assets/icons/pcam_room.png"
+dest_files=["res://.godot/imported/pcam_room.png-67f9a66d74bb835fa525247cfccd66e4.ctex"]
 
 [params]
 
