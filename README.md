@@ -1,12 +1,12 @@
 # ProCam2D - A Custom 2D Camera Node for Godot
 
-![procam wallpaper](https://i.ibb.co/FnsPZxb/procam-wallpaper.png)
+![procam icon](https://i.ibb.co/dkT2tPQ/procam-icon.png)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/dazlike)
 
 ## Overview
 
-**ProCam2D** is a powerful and feature-rich custom 2D camera node designed for Godot Engine. It aims to provide developers with a AAA-quality camera system suitable for all types of 2D games. ProCam2D is a standalone camera solution that surpasses the built-in Camera2D node, offering extensive customization and control.
+![ProCam2D Icon](https://i.ibb.co/s2Ht4RK/pcam.png) **ProCam2D** is a powerful and feature-rich custom 2D camera node designed for Godot Engine. It aims to provide developers with a AAA-quality camera system suitable for all types of 2D games. ProCam2D is a standalone camera solution that surpasses the built-in Camera2D node, offering extensive customization and control.
 
 ## Key Features
 
@@ -129,7 +129,7 @@ func _ready():
 
 ## Additional Nodes
 
-### PCamTarget
+### ![PCamTarget Icon](https://i.ibb.co/GT64yr8/pcam-target.png) PCamTarget
 
 A node that the camera follows. It can be placed as a child of a player. Multiple targets can be placed.
 
@@ -141,7 +141,7 @@ A node that the camera follows. It can be placed as a child of a player. Multipl
 - `influence: Vector2`: Determines how much the target influences the camera movement. Values range from 0 (no influence) to 1+ (full influence).
 - `rotation_influence: float`: Determines how much the target's rotation influences the camera. Values range from 0 (no influence) to 1+ (full influence).
 
-### PCamCinematic
+### ![PCamCinematic Icon](https://i.ibb.co/QjHd0RT/pcam-cinematic.png) PCamCinematic
 
 Allows creating cut scenes.
 
@@ -154,7 +154,7 @@ Allows creating cut scenes.
 - `rotation_speed: float`: Speed of camera rotation during the cinematic, controlling how quickly the camera rotates to match the `PCamCinematic`'s rotation.
 - `zoom_speed: float`: Speed at which the camera zooms in or out during the cinematic.
 
-### PCamMagnet
+### ![PCamMagnet Icon](https://i.ibb.co/6yPtVfB/pcam-magnet.png)  PCamMagnet
 
 Attracts or repels the camera like a magnet.
 
@@ -168,7 +168,7 @@ Attracts or repels the camera like a magnet.
 - `force: Vector2`: Defines the strength of the force applied to the camera when within the influence area, if `use_full_force` is disabled.
 - `falloff_curve: Curve`: A curve defining how the force diminishes with distance from the center of the influence area, if `use_full_force` is disabled.
 
-### PCamZoom
+### ![PCamZoom Icon](https://i.ibb.co/VJbnTwD/pcam-zoom.png) PCamZoom
 
 Changes the zoom of the camera within its area of influence.
 
@@ -180,7 +180,7 @@ Changes the zoom of the camera within its area of influence.
 - `zoom_factor: float`: Factor by which the camera zooms in or out when within the influence area.
 - `gradual_zoom: bool`: Enables or disables gradual zooming when entering or exiting the influence area.
 
-### PCamRoom
+### ![PCamRoom Icon](https://i.ibb.co/GVVLdYZ/pcam-room.png) PCamRoom
 
 Constrains the camera to an area it covers.
 
@@ -190,7 +190,7 @@ Constrains the camera to an area it covers.
 - `zoom: float`: Sets the zoom level within the constrained room area.
 - `open_sides: BitMask`: Specifies which sides of the room are open (left, right, top, bottom). Checkboxes for each side allow for customizable room constraints.
 
-### PCamPath
+### ![PCamPath Icon](https://i.ibb.co/B2spgmh/pcam-path.png) PCamPath
 
 Constrains the camera to a path on a specified axis.
 
@@ -247,6 +247,14 @@ func pre_process(camera, delta):
 	camera._target_position = snapped_target
 ```
 
+You can then add it to the camera like so:
+
+```gdscript
+var grid_addon = PCamGrids.new()
+func _ready() -> void:
+    procam.add_addon(grid_addon)
+```
+
 ### Implementing a New Addon
 
 To create your own addon:
@@ -256,7 +264,7 @@ To create your own addon:
 3. **Enable the Addon**: Ensure your addon is enabled by setting the `enabled` property to `true`.
 
 This framework provides a flexible way to modify camera behavior by compartmentalizing changes into different processing stages.
-```
+
 
 
 
@@ -272,7 +280,7 @@ Contributions are welcome! For detailed instructions on how to contribute, pleas
 
 ## Reporting Bugs or Requesting Features
 
-To report a bug or request a feature, please use the [Issues](https://github.com/daz-b-like/ProCam2D_Godot3.x/issues) section of this repository. Make sure to follow the templates provided for better clarity and organization.
+To report a bug or request a feature, please use the [Issues](https://github.com/daz-b-like/ProCam2D_Godot4.x/issues) section of this repository. Make sure to follow the templates provided for better clarity and organization.
 
 ## License
 
