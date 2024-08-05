@@ -6,7 +6,7 @@
 
 ## Overview
 
-![ProCam2D Icon](https://i.ibb.co/s2Ht4RK/pcam.png) **ProCam2D** is a powerful and feature-rich custom 2D camera node designed for Godot Engine. It aims to provide developers with a AAA-quality camera system suitable for all types of 2D games. ProCam2D is a standalone camera solution that surpasses the built-in Camera2D node, offering extensive customization and control.
+![ProCam2D Icon](https://i.ibb.co/s2Ht4RK/pcam.png) **ProCam2D** is a powerful and feature-rich custom 2D camera node designed for the Godot Engine. It aims to provide developers with a AAA-quality camera system suitable for all types of 2D games. ProCam2D is a standalone camera solution that surpasses the built-in Camera2D node, offering extensive customization and control.
 
 ## Key Features
 
@@ -63,7 +63,7 @@ If you added an addon through the inspector, you can access it like this:
 func _ready():
     var shake_addon = procam.get_addons()[index] # Replace index with the index of the addon on the inspector. 
     shake_addon.shake() #Use this method to start any shake addon
-    shake_addon.stop() # This is a method available to the screenshake addon see below for all available addons
+    shake_addon.stop() #Use this method to stop any shake addon
 ```
 
    ![addon index](https://i.ibb.co/b7Tc6Vf/image.png)
@@ -77,6 +77,7 @@ func _ready():
     shake_addon.shake() # This is a method available to the screenshake addon see below for all available addons
 ```
 ## Available addons
+Addons are processed in order of their priority. from lowest to highest.
 
 ### PCamShake
 
