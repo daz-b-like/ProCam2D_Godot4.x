@@ -45,7 +45,9 @@ var bottom_margin: float = 0.3: set = set_bottom_margin, get = get_bottom_margin
 var cam: Node2D
 
 func _ready():
-	get_tree().connect("tree_changed", Callable(self, "_on_scene_changed"))
+	var cam_g = get_tree().get_nodes_in_group("procam")
+	if not cam_g.empty():
+		cam = cam_g[0]
 
 func start_cinematic(id):
 	cam.start_cinematic(id)
@@ -317,10 +319,3 @@ func get_bottom_margin() -> float:
 
 func get_process_frame() -> float:
 	return cam.process_frame if cam else process_frame
-
-func _on_scene_changed():
-	if is_inside_tree():
-		var cam_g = get_tree().get_nodes_in_group("procam")
-		if not cam_g.is_empty():
-			cam = cam_g[0]
-		else: cam = null
