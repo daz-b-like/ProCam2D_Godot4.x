@@ -12,7 +12,7 @@ var process_frame: int = ProcessMode.OFF: set = set_tha_process_mode
 @export var priority: int = 0: set = set_priority
 var debug_draw: bool = false
 var debug_color := [ Color("#563AFB"), Color("#7a90d8"), Color.YELLOW]
-var _pm : int
+var _pm : int = 1
 var debug_draw_scaler: float
 # Signals
 

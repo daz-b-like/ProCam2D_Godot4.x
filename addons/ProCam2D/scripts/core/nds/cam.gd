@@ -24,7 +24,7 @@ signal addon_message(message)
 
 #variables
 var follow_mode = FollowMode.SINGLE_TARGET: set = set_follow_mode
-var drag_type = DragType.LOOK_AHEAD: set = set_drag_type
+var drag_type = DragType.SMOOTH_DAMP: set = set_drag_type
 var smooth_drag: bool = true: set = set_smooth_drag
 var smooth_drag_speed: Vector2 = Vector2(5, 5)
 var max_distance: = Vector2(100000,100000)
@@ -35,7 +35,7 @@ var smooth_offset_speed: float = 2.0
 var allow_rotation: bool = true: set = set_allow_rotation
 var smooth_rotation: bool = true: set = set_smooth_rotation
 var smooth_rotation_speed: float = 5.0
-var zoom: float = 1.0
+var zoom: float = 1.0 : set = sett_zoom
 var smooth_zoom: bool = true: set = set_smooth_zoom
 var smooth_zoom_speed: float = 5.0
 var auto_zoom: bool = true: set = set_auto_zoom
@@ -94,6 +94,7 @@ var _zooms: Array = []
 var _cinematics: Array = []
 
 func _init() -> void:
+	_init_camera()
 	add_to_group(GROUP_NAME)
 
 func _ready() -> void:
@@ -149,17 +150,19 @@ func check_camera_priority():
 	else:
 		enabled = true
 
+func _init_camera() -> void:
+	_camera = Camera2D.new()
+	call_deferred("add_child", _camera)
+
 func _setup_camera() -> void:
 	_current_position = global_position
 	_current_rotation = global_rotation
 	_current_zoom = zoom
-	_camera = Camera2D.new()
 	_camera.ignore_rotation = false
 	_update_limits()
 	set_global_debug_draw(_global_debug_draw)
 	set_tha_process_mode(_pm)
 	_camera.set_process_mode(process_frame)
-	call_deferred("add_child", _camera)
 	call_deferred("_reparent_camera")
 	_camera.enabled = true
 	if _camera.is_inside_tree():
@@ -566,21 +569,15 @@ func _calculate_target_zoom() -> float:
 
 func _draw_debug() -> void:
 	var target_position = _target_position
-	var screen_rect = Rect2(Vector2.ONE - _viewport_size/2, _viewport_size - Vector2.ONE)
-	if Engine.is_editor_hint():
-		draw_rect(screen_rect, debug_color[1],false,1)
 	# Draw center cursor
-	draw_arc(Vector2.ZERO, 10 * debug_draw_scaler, 0, TAU, 20, debug_color[1], 1)
-	draw_arc(Vector2.ZERO, 13 * debug_draw_scaler, 0, TAU, 20, debug_color[1], 1)
-	draw_line(- Vector2(10 * debug_draw_scaler, 0), + Vector2(10 * debug_draw_scaler, 0), debug_color[1], 1)
-	draw_line(- Vector2(0, 10 * debug_draw_scaler), + Vector2(0, 10 * debug_draw_scaler), debug_color[1], 1)
+	draw_arc(Vector2.ZERO - _current_offset, 10 * debug_draw_scaler, 0, TAU, 20, debug_color[1], 1)
+	draw_arc(Vector2.ZERO - _current_offset, 13 * debug_draw_scaler , 0, TAU, 20, debug_color[1], 1)
+	draw_line(- Vector2(10 * debug_draw_scaler, 0) - _current_offset, + Vector2(10 * debug_draw_scaler, 0) - _current_offset, debug_color[1], 1)
+	draw_line(- Vector2(0, 10 * debug_draw_scaler) - _current_offset, + Vector2(0, 10 * debug_draw_scaler) - _current_offset, debug_color[1], 1)
 		# Draw target position
 	if !Engine.is_editor_hint():
-		if _current_offset != Vector2.ZERO:
-			draw_line(to_local(target_position), to_local(target_position + _current_offset), debug_color[1] - Color(0, 0, 0, 0.8), 1)
-			draw_arc(to_local(target_position), 5 * debug_draw_scaler, 0, TAU, 20, debug_color[1] - Color(0, 0, 0, 0.8), 1)
-		draw_line(Vector2.ZERO, to_local(target_position + _current_offset), debug_color[1], 1)
-		draw_arc(to_local(target_position + _current_offset), 5 * debug_draw_scaler, 0, TAU, 20, debug_color[1], 1)
+		draw_line(Vector2.ZERO - _current_offset, to_local(target_position), debug_color[1], 1)
+		draw_arc(to_local(target_position), 5 * debug_draw_scaler, 0, TAU, 20, debug_color[1], 1)
 		
 	
 	# Draw drag margin rect
@@ -618,6 +615,11 @@ func set_rotation(new_rotation: float):
 func set_zoom(new_zoom: float):
 	_current_zoom = new_zoom
 	_apply_transforms()
+
+func sett_zoom(new_zoom: float):
+	zoom = new_zoom
+	if _camera:
+		_camera.zoom = Vector2(new_zoom, new_zoom)
 
 func add_addon(addon: PCamAddon) -> void:
 	if addon and not addons.has(addon):

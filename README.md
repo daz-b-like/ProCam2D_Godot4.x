@@ -20,6 +20,7 @@
 1. Download or clone the ProCam2D repository.
 2. Copy the `ProCam2D` folder into your Godot project’s `addons` directory.
 3. Enable the ProCam2D plugin in your project settings.
+4. Save and Reload your project from the `project` menu to ensure the plugin is properly loaded.
 
 ## Usage
 
